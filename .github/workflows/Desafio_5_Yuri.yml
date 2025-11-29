@@ -1,0 +1,48 @@
+name: Desafio_5_Yuri
+
+on:
+  push:
+    branches: [ main, develop ]
+
+  pull_request:
+    branches: [ main, develop ]
+
+  schedule:
+    # 1. Todo dia às 6:50 da manhã (UTC)
+    - cron: '50 6 * * *'
+
+    # 2. A cada 30 minutos durante o horário comercial (8h às 18h UTC)
+    - cron: '*/30 8-18 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  test-and-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Simulação dos testes
+      - name: Executar Testes
+        run: |
+          echo "Iniciando execução agendada..."
+          echo "Hora atual (UTC): $(date)"
+          # Aqui entraria seu comando real, ex: npm test, pytest, etc.
+          echo "Rodando testes unitários..."
+
+      # Simulação do relatório
+      - name: Gerar Relatório
+        run: |
+          echo "Compilando resultados..."
+          # Cria um arquivo simples para simular o relatório
+          echo "Relatório de Execução - $(date)" > relatorio.txt
+          echo "Todos os testes passaram com sucesso." >> relatorio.txt
+
+      # Salva o relatório como artefato para você baixar depois
+      - name: Upload do Relatório
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-execucao
+          path: relatorio.txt
+          retention-days: 5
